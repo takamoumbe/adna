@@ -23,6 +23,13 @@
 			return $query;
 		}
 
+		# 1- count all associations
+		public function count_all_association(){
+			$query = $this->db->from('associations')->count_all_results();
+			return $query;
+		}
+
+
 		
 		# 3- Infos d'une association
 		public function get($idAssocia) {

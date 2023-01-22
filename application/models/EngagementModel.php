@@ -26,7 +26,7 @@ class EngagementModel extends CI_Model {
 
 
 
-	# 2- Inserer un engagement
+	# 3- Inserer un engagement
 	public function if_exit_engagement($data) {
 		$query =  $this->db
 		->select('count(*) as engagementCount')
@@ -38,6 +38,9 @@ class EngagementModel extends CI_Model {
 		return $query;
 	}
 
+	# 4- selectionner tout les engagement actifs
+
+	
 
 }
 ?>

@@ -6,7 +6,7 @@ $route['404_override'] = 'Dashboard/_404';
 $route['translate_uri_dashes'] = FALSE;
 
 
-$route['Authentification']				= 'Dashboard/index';
+$route['Authentification']				= 'Dashboard/index'; 
 $route['Home'] 							= 'Dashboard/dashboard';
 
 
@@ -53,3 +53,6 @@ $route['versementListe'] 				= "Versement/get_all";
 $route['versementCreate']['post'] 		= "Versement/store";
 $route['versementEdit/(:any)'] 			= "Versement/get/$1";
 $route['versementUpdate'] 				= "Versement/update";
+
+
+// pass : 57RHriG34j57Ldj

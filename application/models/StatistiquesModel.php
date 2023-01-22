@@ -9,22 +9,15 @@
 		}
 
 
-		# 1- count all associations
-		public function count_all_association(){
-			$query = $this->db->from('associations')->count_all_results();
-			return $query;
-		}
-
-
 		# 2- count all paroissiens
-		public function count_all_association(){
+		public function count_all_paroissiens(){
 			$query = $this->db->from('paroisiens')->count_all_results();
 			return $query;
 		}
 
 
 		# 3- compte paroissiens par associations
-		public function count_all_association(){
+		public function count_all_paroissiens_par_associations(){
 			$query =  $this->db
 			->select('associations.sigle, count(*) as  totalParoissiens')
 			->where('paroisiens.association = associations.idAssocia')

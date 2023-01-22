@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $config = array(
 	'default' => array(
-		'hostname' => '127.0.0.1',
+		'hostname' => 'http://192.168.43.93:8080/',
 		'port'     => '11211',
 		'weight'   => '1',
 	),

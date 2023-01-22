@@ -19,7 +19,7 @@ class Dashboard extends CI_Controller {
 
 
 	# page de connexion
-	public function index() {
+	public function index() {  
 		$this->load->view('connexion');
 	}
 
@@ -31,16 +31,16 @@ class Dashboard extends CI_Controller {
 
 
 	public function dashboard() {
-		$data['count_all_assiciation'] = $this->Association->count_all_association();
+		$data['count_all_assiciation'] 		    = $this->Association->count_all_association();
 
 		#section engagements
-		$data['count_all_engagement'] = $this->Engagement->count_all_engagement();
-		$data['get_all_engagement_actif'] 		= $this->Engagement->get_all_actif();
-		$data['get_all_engagement_inactif'] = $this->Engagement->get_all_inactif();
-		$data['get_best_engagement_of_year'] = $this->Engagement->get_best_engagement_of_year();
-		$data['all_engagements'] = $this->Engagement->get_all();
-		$data['engagements_versements'] = $this->Engagement->engagements_versements();
-		$data['simple_engagements_versements'] = $this->Engagement->simple_engagements_versements();
+		$data['count_all_engagement'] 		 	= $this->Engagement->count_engagements();
+		$data['get_all_engagement_actif'] 	 	= $this->Engagement->get_all_actif();
+		$data['get_all_engagement_inactif']  	= $this->Engagement->get_all_inactif();
+		$data['get_best_engagement_of_year'] 	= $this->Engagement->get_best_engagement_of_year();
+		$data['all_engagements'] 			 	= $this->Engagement->get_all();
+		$data['engagements_versements'] 	 	= $this->Engagement->engagements_versements();
+		$data['simple_engagements_versements'] 	= $this->Engagement->simple_engagements_versements();
 		
 
 
