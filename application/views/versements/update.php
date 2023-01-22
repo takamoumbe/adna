@@ -71,7 +71,7 @@ if ($this->session->flashdata('message')){
           <div class="col-md-12">
 
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title">Modifier Versement</h3>
               </div>
@@ -82,14 +82,13 @@ if ($this->session->flashdata('message')){
                 <div class="card-body row">
                   <div class="form-group col-md-12">
                     <label for="engagement">Matricule Versement</label>
-                    <input type="hidden" name="idVers"  value="<?php echo $versements->idVers;?>">
-                    <input type="hidden" name="engagement"  value="<?php echo $versements->engagement;?>">
-                    <input type="text" readonly onkeypress="return onlyNumberKey(event)"  class="form-control bg-white" id="paroisienSplit" placeholder="Entrer le montant du Versement de cet Engagement....." value="<?php echo $versements->matriculeVers;?>" >
+                    <input type="hidden" name="idVers"  value="<?php echo $versements[0]->idVers;?>">
+                    <input type="text" readonly onkeypress="return onlyNumberKey(event)" name="MatriculeVersement"  class="form-control bg-white" id="paroisienSplit" placeholder="Entrer le montant du Versement de cet Engagement....." value="<?php echo $versements[0]->matriculeVers;?>" >
                   </div>
 
                   <div class="form-group col-md-6">
                     <label for="date_versement">Date Versement</label>
-                    <input type="date" readonly name="date_versement" class="form-control bg-white" id="date_versement" placeholder="Entrer le prénom du paroisien....." value="<?php echo $versements->date_versement ?>">
+                    <input type="date" readonly name="date_versement" class="form-control bg-white" id="date_versement" placeholder="Entrer le prénom du paroisien....." value="<?php echo $versements[0]->date_versement ?>">
                     <?php echo form_error('date_versement', '<div class="text-danger">', '</div>'); ?>
                   </div>
 
@@ -100,26 +99,20 @@ if ($this->session->flashdata('message')){
                     </select>
                   </div>
 
-                  <div class="form-group input-group row col-md-6">
-                    <label for="montant" class="col-md-12">Montant Versement</label>
-                    <input type="text" name="montant" onkeypress="return onlyNumberKey(event)" class="form-control" id="montant" placeholder="Entrer le montant du Versement de cet Engagement....." minlength="3" autocomplete="off" value="<?php echo $versements->montant ?>">
-                    <div class="input-group-append">
-                      <div class="input-group-text">
-                        <span>FCFA</span>
-                      </div>
-                    </div>
-                    <?php echo form_error('montant', '<div class="text-danger col-12">', '</div>'); ?>
+                  <div class="form-group col-md-6">
+                    <label for="evenement">Montant Versé</label>
+                    <input type="text" name="montant" onkeypress="return onlyNumberKey(event)" class="form-control" id="montant" placeholder="Entrer le montant du Versement de cet Engagement....." minlength="3" autocomplete="off" value="<?php echo $versements[0]->montantVersement ?>">
                   </div>
 
                   <div class="form-group  col-md-6">
                     <label for="paroisien" class="col-md-12">Paroisien Concerné</label>
-                    <input type="text" name="paroisien" readonly onkeypress="return onlyNumberKey(event)" class="form-control bg-white" id="paroisien" placeholder="Entrer le montant du Versement de cet Engagement....."  value="<?php echo strtoupper($versements->nomParoisien).' '.ucfirst($versements->prenomParoisien) ?>">
+                    <input type="text" name="paroisien" readonly onkeypress="return onlyNumberKey(event)" class="form-control bg-white" id="paroisien" placeholder="Entrer le montant du Versement de cet Engagement....."  value="<?php echo strtoupper($versements[0]->nom).' '.ucfirst($versements[0]->prenom) ?>">
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">
+                  <button type="button" id="submit-association" class="btn btn-primary">
                     Modifier <i class="fa fa-save ml-1"></i>
                   </button>
                 </div>
@@ -152,28 +145,50 @@ if ($this->session->flashdata('message')){
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     })
+  </script>
 
-    function getId(id) {
-      alert(id)
-    }
 
-    $("#association").change(function(){
-      var val = $(".items1");
-      // var atr = val.textContent;
-      alert("Vous avez sélectionné le langage : " + val);
+  <script>
+    $('#submit-association').on('click',function(e){
+      e.preventDefault();
+      var form = $(this).parents('form');
+      Swal.fire({
+        title: "Etes vous sur?",
+        text: "Souhaitez vous vraiment modifié ce versement ?",
+        type: "warning",
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Oui, je le souhaite!",
+        closeOnConfirm: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title:"Traitement",
+            text: "Requete de modification en cour de traitement.",
+            showSpinner: true,
+            showClass:{
+              popup:"animate__animated animate__bounceIn"
+            },
+            allowOutsideClick: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Okey, merci!",
+            preConfirm: () => {
+              Swal.showLoading()
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve(true)
+                }, 3000)
+              })
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          })
+        }
+      });
     });
-
-    // $(document).change(function(){
-    //   var val = $("#item1").val();
-    //   alert(val)
-
-    // });
-
-    // $('.items1').change(function() { 
-    //   var a = $(this).html();
-    //   console.log(a)
-    // });
-
   </script>
 
 </body>

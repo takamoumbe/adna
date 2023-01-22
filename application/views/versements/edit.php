@@ -71,9 +71,9 @@ if ($this->session->flashdata('message')){
           <div class="col-md-12">
 
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Nouveau Versement</h3>
+                <h3 class="card-title"><b>Nouveau Versement</b></h3>
               </div>
 
               <!-- form start -->
@@ -83,11 +83,13 @@ if ($this->session->flashdata('message')){
                   <div class="form-group col-md-12">
                     <label for="engagement">Référence Engagement</label>
                     <select class="form-control select2bs4" id="engagement" name="engagement" style="width: 100%;">
-                      <?php foreach($engagements as $result) : ?>
-                        <option value="<?php echo $result->idEngagement;?>">
-                          <?php echo $result->matriculEngag .' | '.strtoupper($result->nomParoisien).' '.ucfirst($result->prenomParoisien).' | '.$result->type.' | '.number_format($result->montant).' FCFA'?>
+                      <?php  
+                      for ($i=0; $i < count($engagements); $i++) { 
+                        ?>
+                        <option value="<?php echo $engagements[$i]->idEngagement;?>">
+                          <?php echo $engagements[$i]->matriculEngag .' | '.strtoupper($engagements[$i]->nom).' '.ucfirst($engagements[$i]->prenom).' | '.$engagements[$i]->type.' | '.number_format($engagements[$i]->montant).' FCFA'?>
                         </option>
-                      <?php endforeach; ?>
+                      <?php }; ?>
                     </select>
                     <?php echo form_error('engagement', '<div class="text-danger">', '</div>'); ?>
                   </div>
@@ -105,42 +107,29 @@ if ($this->session->flashdata('message')){
                     </select>
                   </div>
 
-                  <div class="form-group input-group row col-md-6">
-                    <label for="montant" class="col-md-12">Montant Versement</label>
-                    <input type="text" name="montant" onkeypress="return onlyNumberKey(event)" class="form-control" id="montant" placeholder="Entrer le montant du Versement de cet Engagement....." minlength="3" autocomplete="off">
+                  <div class="form-group col-md-12">
+                    <label for="evenement">Montant Versement</label>
                     <div class="input-group-append">
-                      <div class="input-group-text">
+                      <input 
+                      type="text" 
+                      name="montant" 
+                      onkeypress="return onlyNumberKey(event)" 
+                      class="form-control rounded-0" 
+                      id="montant" 
+                      placeholder="Entrer le montant du Versement de cet Engagement....." 
+                      minlength="3" 
+                      autocomplete="off"
+                      />
+                      <div class="input-group-text rounded-0">
                         <span>FCFA</span>
                       </div>
                     </div>
-                    <?php echo form_error('montant', '<div class="text-danger col-12">', '</div>'); ?>
-                  </div>
-
-                  <div class="form-group  col-md-6">
-                    <label for="montant" class="col-md-12">Paroisien Concerné</label>
-                    <input type="text" readonly onkeypress="return onlyNumberKey(event)" class="form-control bg-white" id="paroisienSplit" placeholder="Entrer le montant du Versement de cet Engagement.....">
-                  </div>
-
-                  <div class="form-group  col-md-6">
-                    <label for="montant" class="col-md-12">Type D'engagement</label>
-                    <input type="text" readonly onkeypress="return onlyNumberKey(event)" class="form-control bg-white" id="paroisienSplit" placeholder="Entrer le montant du Versement de cet Engagement.....">
-                  </div>
-
-                  <div class="form-group input-group row col-md-6">
-                    <label class="col-md-12">Montant Initial Engagement</label>
-                    <input type="text" readonly class="form-control bg-white" id="montantSplit" placeholder="Entrer le montant du Versement de cet Engagement....." >
-                    <div class="input-group-append">
-                      <div class="input-group-text">
-                        <span>FCFA</span>
-                      </div>
-                    </div>
-                    <?php echo form_error('montant', '<div class="text-danger">', '</div>'); ?>
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">
+                  <button type="button" id="submit-association" class="btn btn-primary">
                     Enregistrer <i class="fa fa-save ml-1"></i>
                   </button>
                 </div>
@@ -173,28 +162,49 @@ if ($this->session->flashdata('message')){
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     })
+  </script>
 
-    function getId(id) {
-      alert(id)
-    }
-
-    $("#association").change(function(){
-      var val = $(".items1");
-      // var atr = val.textContent;
-      alert("Vous avez sélectionné le langage : " + val);
+  <script>
+    $('#submit-association').on('click',function(e){
+      e.preventDefault();
+      var form = $(this).parents('form');
+      Swal.fire({
+        title: "Etes vous sur?",
+        text: "Souhaitez vous vraiment enregistré ce versement ?",
+        type: "warning",
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Oui, je le souhaite!",
+        closeOnConfirm: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title:"Traitement",
+            text: "Requete en cour de traitement.",
+            showSpinner: true,
+            showClass:{
+              popup:"animate__animated animate__bounceIn"
+            },
+            allowOutsideClick: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Okey, merci!",
+            preConfirm: () => {
+              Swal.showLoading()
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve(true)
+                }, 3000)
+              })
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          })
+        }
+      });
     });
-
-    // $(document).change(function(){
-    //   var val = $("#item1").val();
-    //   alert(val)
-
-    // });
-
-    // $('.items1').change(function() { 
-    //   var a = $(this).html();
-    //   console.log(a)
-    // });
-
   </script>
 
 </body>

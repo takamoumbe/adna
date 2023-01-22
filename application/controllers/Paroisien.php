@@ -28,7 +28,7 @@ class Paroisien extends CI_Controller {
 
 	# 2- Insertion d'un paroisien
 	public function store() {
-		$this->form_validation->set_rules('association', 	'Nom l\'association',   'required');
+		$this->form_validation->set_rules('association', 	'Nom l\'association', 'required');
 		$this->form_validation->set_rules('sexe', 			'Sexe de paroisien', 	'required');
 		$this->form_validation->set_rules('categorie', 		'Catégorie paroisien', 	'required');
 		$this->form_validation->set_rules('nom', 			'Nom du paroisien', 	'required');
