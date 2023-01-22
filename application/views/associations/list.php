@@ -105,9 +105,10 @@ if ($this->session->flashdata('message')){
                               <button type="button" class="btn btn-ligth d-none" onclick="delete_association('<?php echo $result->idAssocia ?>', '<?php echo $result->nom ?>')">
                                 <i class="fa fa-trash"></i>
                               </button>
-                              <a href="<?php echo base_url("associationEdit/".$result->idAssocia) ?>" class="btn btn-ligth" >
-                                <i class='fa fa-edit'></i>
-                              </a>
+
+                              <button type="button" class="btn btn-ligth" onclick="upload_association('<?php echo $result->idAssocia ?>', '<?php echo $result->nom ?>')">
+                                <i class="fa fa-edit"></i>
+                              </button>
                               <button type="button" class="btn btn-ligth d-none" onclick="reload_association('<?php echo $result->idAssocia ?>', '<?php echo $result->nom ?>')">
                                 <i class='fa fa-recycle'></i>
                               </button>
@@ -193,6 +194,51 @@ if ($this->session->flashdata('message')){
             if (result.isConfirmed) {
               $.ajax({
                 url: window.location = "<?php echo base_url('associationDelete/')?>" + userId,
+                type: "PUT",
+                dataType: "JSON",
+              });
+            }
+          })
+        }
+      });
+    }
+
+
+
+
+    function upload_association(userId, nom) {
+      Swal.fire({
+        title: "Etes vous sur?",
+        text: "Souhaitez vous vraiment modifié cette association ?",
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Oui, je le souhaite!",
+        cancelButtonText: "Annuler",
+        closeOnConfirm: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title:"Traitement",
+            html: "Requete en cours de traitement.",
+            showClass:{
+              popup:"animate__animated animate__bounceIn"
+            },
+            allowOutsideClick: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Okey, merci!",
+            preConfirm: () => {
+              Swal.showLoading()
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve(true)
+                }, 3000)
+              })
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                url: window.location = "<?php echo base_url('associationEdit/')?>" + userId,
                 type: "PUT",
                 dataType: "JSON",
               });

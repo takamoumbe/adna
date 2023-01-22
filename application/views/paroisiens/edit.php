@@ -84,7 +84,7 @@ if ($this->session->flashdata('message')){
                     <label for="association">Nom Association</label>
                     <select class="form-control select2bs4" id="association" name="association" style="width: 100%;">
                       <?php foreach($associations as $result) : ?>
-                      <option value="<?php echo $result->idAssocia;?>"><?php echo $result->nom. " (".$result->sigle.") "; ?></option>
+                      <option selected value="<?php echo $result->idAssocia;?>"><?php echo $result->nom. " (".$result->sigle.") "; ?></option>
                       <?php endforeach; ?>
                     </select>
                     <?php echo form_error('nom', '<div class="text-danger">', '</div>'); ?>
@@ -209,6 +209,14 @@ if ($this->session->flashdata('message')){
             allowOutsideClick: false,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "Okey, merci!",
+            preConfirm: () => {
+              Swal.showLoading()
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve(true)
+                }, 3000)
+              })
+            }
           }).then((result) => {
             if (result.isConfirmed) {
               form.submit();

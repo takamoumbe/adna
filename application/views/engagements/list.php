@@ -72,73 +72,103 @@ if ($this->session->flashdata('message')){
           <div class="col-md-12">
 
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title">Liste des Engagements</h3>
               </div>
 
               <!-- form start -->
               <div class="card-body">
+
+                <br>
+                <div class="card card card-ligth">
+                  <div class="card-header">
+                    <h3 class="card-title">Filtrez les données en fonction de vos exideances</h3>
+
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool mt-1" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-md-3 col-12">
+                        <label for="categorie">
+                          Total Paroissiens : <span class="text-danger mx-3" id="totalParoissiens"></span>
+                        </label>
+                      </div>
+
+                      <div class="form-group col-md-3 col-12">
+                        <label for="categorie">
+                          Total Hommes : <span class="text-danger mx-3" id="totalHommes"></span>
+                        </label>
+                      </div>
+
+                      <div class="form-group col-md-3 col-12">
+                        <label for="categorie">
+                          Total Femmes : <span class="text-danger mx-3" id="totalFemmes"></span>
+                        </label>
+                      </div>
+
+                      <div class="form-group col-md-3 col-12">
+                        <label for="categorie">
+                          Montant Total : <span class="text-danger mx-3" id="totalMontant"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                     <tr class="text-center">
-                      <th>ID</th>
+                      <th>N°</th>
                       <th>Matricule</th>
-                      <th>Paroisien</th>
+                      <th>Noms & Prénoms</th>
+                      <th>Sexe</th>
+                      <th>Association</th>
                       <th>Type Enagement</th>
-                      <th>Date Début</th>
-                      <th>Date Fin</th>
                       <th>Montant</th>
-                      <th>statut</th>
                       <th class="col-md-2">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php 
+                    <?php  
                     $id = 1;
-                    foreach($Engagements as $result) : 
+                    for ($i=0; $i < count($Engagements); $i++) { 
                       ?>
                       <tr class="text-center">
-                        <td class="text-center"><?php echo $id; ?></td>
-                        <td><?php echo $result->matriculEngag; ?></td>
-                        <td class="text-capitalize"><?php echo $result->nomParoisien.' '.$result->prenomParoisien; ?></td>
-                        <td class="text-capitalize"><?php echo $result->type; ?></td>
-                        <td><?php echo $result->date_debut; ?></td>
-                        <td class="text-center"><?php echo $result->date_fin; ?></td>
-                        <td class="text-center"><?php echo number_format($result->montant).' fcfa'; ?></td>
-                        <td class="text-center"><?php echo $result->statut; ?></td>
+                        <td><?php echo $id; ?></td>
+                        <td><?php echo $Engagements[$i]->matriculEngag; ?></td>
+                        <td><?php echo strtoupper($Engagements[$i]->nom).' '.ucfirst($Engagements[$i]->prenom); ?></td>
+                        <td><?php echo $Engagements[$i]->sexe; ?></td>
+                        <td><?php echo $Engagements[$i]->sigle; ?></td>
+                        <td><?php echo $Engagements[$i]->type; ?></td>
+                        <td><?php echo $Engagements[$i]->montant; ?></td>
                         <td>
-                          <center>
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-ligth" onclick="delete_association('<?php echo $result->idEngagement ?>', '<?php echo $result->nomParoisien.' '.$result->prenomParoisien ?>')">
-                                <i class="fa fa-trash"></i>
-                              </button>
-                              <a href="<?php echo base_url("engagementEdit/".$result->idEngagement) ?>" class="btn btn-ligth" >
-                                <i class='fa fa-edit'></i>
-                              </a>
-                              <button type="button" class="btn btn-ligth" onclick="reload_association('<?php echo $result->idEngagement ?>', '<?php echo $result->nomParoisien.' '.$result->prenomParoisien ?>')">
-                                <i class='fa fa-recycle'></i>
-                              </button>
-                            </div>
-                          </center>
+                          <button type="button" class="btn btn-ligth" onclick="updateParoissien('<?php echo $Engagements[$i]->idEngagement ?>', '<?php echo $Engagements[$i]->matriculEngag ?>', '<?php echo $Engagements[$i]->nom." ".$Engagements[$i]->prenom ?>')">
+                            <i class='fa fa-edit'></i>
+                          </button>
                         </td>
                       </tr>
-                      <?php 
-                      $id++;
-                      endforeach; 
+                      <?php
+                      $id++;  
+                    }
                     ?>
+
                   </tbody>
                   <tfoot>
                     <tr class="text-center">
-                      <th>ID</th>
-                      <th>Matricule</th>
-                      <th>Paroisien</th>
-                      <th>Type Enagement</th>
-                      <th>Date Début</th>
-                      <th>Date Fin</th>
-                      <th>Montant</th>
-                      <th>statut</th>
-                      <th>Actions</th>
+                      <th>N°</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th class="col-md-2">Actions</th>
                     </tr>
                   </tfoot>
                 </table>
@@ -159,50 +189,70 @@ if ($this->session->flashdata('message')){
   <?php include 'vendors/includes/javascript.php'; ?>
   <script>
 
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-    function delete_association(userId, nom) {
-      Swal.fire({
-        title: "Etes vous sur?",
-        text: "Souhaitez vous vraiment supprimé cet engagement ?",
-        allowOutsideClick: false,
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Oui, je le souhaite!",
-        cancelButtonText: "Annuler",
-        closeOnConfirm: false
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title:"Félicitations",
-            text: "L'engagement du paroisien "+ nom +" a bien été supprimé.",
-            showClass:{
-              popup:"animate__animated animate__bounceIn"
-            },
-            allowOutsideClick: false,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Okey, merci!",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              $.ajax({
-                url: window.location = "<?php echo base_url('engagementDelete/')?>" + userId,
-                type: "PUT",
-                dataType: "JSON",
-              });
-            }
-          })
-        }
+    $(document).ready(function () {
+      $('#example1 tfoot th').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
       });
-    }
 
+    // DataTable
+      var table = $('#example1').DataTable({
+        "responsive": true, 
+        "lengthChange": false, 
+        "autoWidth": false,
+        "buttons": ["csv", "excel", "pdf", "colvis"],
+        initComplete: function () {
+          this.api().columns().every(function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change clear', function () {
+              if (that.search() !== this.value) {
+                that.search(this.value).draw();
+              }
+            });
+          });
+        },
 
-    function reload_association(userId, nom) {
+        drawCallback: function () {
+          var api = this.api();
+          var intVal = function ( i ) {
+            return typeof i === 'string' ?
+            i.replace(/[\$,]/g, '')*1 :
+            typeof i === 'number' ?
+            i : 0;
+          };
+          var sum = 0;
+          var totalParoissiens = 0;
+          var totalHommes = 0;
+          var totalFemmes = 0;
+          var totalMontant = 0;
+
+          totalMontant = api.column( 6 ).data().reduce( function (a, b) {return intVal(a) + intVal(b);}, 0 );
+          var formated = 0;
+          sum = api.column(0).data().count();
+
+          for (var i = 0; i < sum; i++) {
+            if (api.column(3).data(2)[i].toLowerCase() == 'masculin') {
+              totalHommes += 1;
+            }
+            if (api.column(3).data(2)[i].toLowerCase() == 'feminin') {
+              totalFemmes += 1;
+            }
+          }
+          $('#totalParoissiens').text(sum);
+          $('#totalHommes').text(totalHommes);
+          $('#totalFemmes').text(totalFemmes);
+          $('#totalMontant').text(totalMontant);
+        },
+      });
+      table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+
+    
+
+    function updateParoissien(userId, matricule, nom) {
       Swal.fire({
         title: "Etes vous sur?",
-        text: "Souhaitez vous vraiment réactivé cet engagement ?",
+        html: "Souhaitez vous vraiment modifier l'engagement <b>"+ matricule +"</b> de <b>"+nom+"</b> ?",
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -211,24 +261,11 @@ if ($this->session->flashdata('message')){
         closeOnConfirm: false
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title:"Félicitations",
-            text: "L'engagement du paroisien "+ nom +" a bien été réactivé.",
-            showClass:{
-              popup:"animate__animated animate__bounceIn"
-            },
-            allowOutsideClick: false,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Okey, merci!",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              $.ajax({
-                url: window.location = "<?php echo base_url('engagementReload/')?>" + userId,
-                type: "PUT",
-                dataType: "JSON",
-              });
-            }
-          })
+          $.ajax({
+            url: window.location = "<?php echo base_url('engagementEdit/')?>" + userId,
+            type: "GET",
+            dataType: "JSON",
+          });
         }
       });
     }

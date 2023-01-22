@@ -15,20 +15,65 @@
 			return $query;
 		}
 
-
-		# 3- compte paroissiens par associations
-		public function count_all_paroissiens_par_associations(){
+		# 1- Total des associations
+		public function count_association(){
 			$query =  $this->db
-			->select('associations.sigle, count(*) as  totalParoissiens')
-			->where('paroisiens.association = associations.idAssocia')
-			->group_by('associations.sigle',  'ASC')
+			->select('count(*) as totalAssociation')
+			->get('associations')->result();
+			return $query;
+		}
+
+
+		# 2- Total des egagements
+		public function count_paroissiens(){
+			$query =  $this->db
+			->select('count(*) as totalParoissiens')
+			->get('paroisiens')->result();
+			return $query;
+		}
+
+
+		# 3- Total des egagements
+		public function count_engagement(){
+			$query =  $this->db
+			->select('count(*) as totalEngagements')
+			->get('engagements')->result();
+			return $query;
+		}
+
+
+		# 4- Total des versements
+		public function count_versement(){
+			$query =  $this->db
+			->select('count(*) as totalVersement')
+			->get('versements')->result();
+			return $query;
+		}
+
+
+		# 5- Total des paroissiens par association
+		public function paroissienParAssociation(){
+			$query =  $this->db
+			->select('associations.sigle, count(paroisiens.idParois) as totalParoissiens')
+			->where('associations.idAssocia = paroisiens.association')
+			->group_by("associations.sigle", "ASC")
 			->get('associations, paroisiens')->result();
 			return $query;
 		}
 
 
-		# 4- compte paroissiens par catégorie
-		public function count_paroissien_by_categorie(){
+		# 3- Total des paroissiens par sexe
+		public function paroissienParSexe(){
+			$query =  $this->db
+			->select('sexe, count(*) as totalParoissiens')
+			->group_by("paroisiens.sexe", "ASC")
+			->get('paroisiens')->result();
+			return $query;
+		}
+
+
+		# 3- Total des paroissiens par catégorie
+		public function paroissienParCategorie(){
 			$query =  $this->db
 			->select('paroisiens.categorie, count(*) as paroissienCategorie')
 			->group_by('paroisiens.categorie',  'ASC')
@@ -36,35 +81,11 @@
 			return $query;
 		}
 
-
-		# 5- compte paroissiens par sexe
-		public function count_paroissien_by_sexe(){
-			$query =  $this->db
-			->select('paroisiens.sexe, count(*) as paroissienSexe')
-			->group_by('paroisiens.sexe',  'ASC')
-			->get('paroisiens')->result();
-			return $query;
-		}
-
-
-		# 6- compte paroissiens par sexe
-		public function count_paroissien_by_adresse(){
-			$query =  $this->db
-			->select('paroisiens.adresse, count(*) as paroissienAdresse')
-			->group_by('paroisiens.adresse',  'ASC')
-			->get('paroisiens')->result();
-			return $query;
-		}
-
-
 		
-		# 7- count all gestionnaire
-		public function count_all_gestionnaire(){
-			$query = $this->db->from('gestionnaire')->count_all_results();
+		# 5- compter les associations
+		public function counting_all_gestionnaire()	{
+			$query = $this->db->count_all('gestionnaire');
 			return $query;
 		}
-
-
-		
 	}
 ?>

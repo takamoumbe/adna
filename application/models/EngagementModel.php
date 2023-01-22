@@ -31,7 +31,7 @@ class EngagementModel extends CI_Model {
 		$query =  $this->db
 		->select('count(*) as engagementCount')
 		->where('engagements.paroisien = '.$data['paroisien'])
-		->where('engagements.type = '.$data['type'])
+		->where("engagements.type = '".$data['type']."'")
 		->where('engagements.date_fin >= '.$data['date_debut'])
 		->where('engagements.date_fin <= '.$data['date_fin'])
 		->get('engagements')->result();
@@ -41,6 +41,46 @@ class EngagementModel extends CI_Model {
 	# 4- selectionner tout les engagement actifs
 
 	
+
+
+	# 4- Infos de toutes les engagements 
+	public function get_all() {
+		$query =  $this->db
+		->select('engagements.idEngagement, engagements.matriculEngag, engagements.paroisien')
+		->select('paroisiens.nom, paroisiens.prenom, engagements.type, engagements.montant, engagements.date_debut, engagements.date_fin')
+		->select('associations.nom as nomAssoc, associations.sigle, paroisiens.association, paroisiens.sexe')
+		->where('engagements.paroisien = paroisiens.idParois')
+		->where('paroisiens.association = associations.idAssocia')
+		->order_by("paroisiens.nom", "ASC")
+		->order_by("paroisiens.prenom", "ASC")
+		->get('engagements, associations, paroisiens')->result();
+		return $query;
+	}
+
+
+
+	# 4- Infos d'un engagement 
+	public function get($idEngagement) {
+		$query =  $this->db
+		->select('engagements.idEngagement, engagements.matriculEngag, engagements.paroisien')
+		->select('paroisiens.nom, paroisiens.prenom, engagements.type, engagements.montant, engagements.date_debut, engagements.date_fin')
+		->select('associations.nom as nomAssoc, associations.sigle, paroisiens.association, paroisiens.sexe')
+		->where('engagements.idEngagement = '.$idEngagement)
+		->where('engagements.paroisien = paroisiens.idParois')
+		->where('paroisiens.association = associations.idAssocia')
+		->order_by("paroisiens.nom", "ASC")
+		->order_by("paroisiens.prenom", "ASC")
+		->get('engagements, associations, paroisiens')->result();
+		return $query;
+	}
+
+		
+	# 5- Modifier un engagement
+	public function update($idEngagement, $data)	{
+		$query = $this->db->where('idEngagement',$idEngagement)->update('engagements',$data);
+		return $query;
+	}
+
 
 }
 ?>

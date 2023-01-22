@@ -18,6 +18,33 @@ class GestionnaireModel extends CI_Model {
 
 
 	# 2- Infos de toutes les paroissiens 
+	public function loginCount($login, $password) {
+		$query =  $this->db
+		->select('count(*) as nombreGestionnaire')
+		->where('gestionnaire.login = '.$login)
+		->where('gestionnaire.password = '.$password)
+		->get('gestionnaire')->result();
+		return $query;
+	}
+
+
+
+	# 2- Infos de toutes les paroissiens 
+	public function loginData($login, $password) {
+		$query =  $this->db
+		->select('paroisiens.nom, paroisiens.prenom, gestionnaire.fonction, gestionnaire.accreditations, gestionnaire.idGest')
+		->select('gestionnaire.login, gestionnaire.password, associations.sigle, associations.nom as nomAssociation')
+		->where('gestionnaire.paroisien = paroisiens.idParois')
+		->where('paroisiens.association = associations.idAssocia')
+		->where('gestionnaire.login = '.$login)
+		->where('gestionnaire.password = '.$password)
+		->get('paroisiens, gestionnaire, associations')->result();
+		return $query;
+	}
+
+
+
+	# 2- Infos de toutes les paroissiens 
 	public function get_all() {
 		$query =  $this->db
 		->select('gestionnaire.idGest, gestionnaire.paroisien, gestionnaire.accreditations, gestionnaire.fonction')

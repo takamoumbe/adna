@@ -263,7 +263,7 @@ if ($this->session->flashdata('message')){
 
           var formated = 0;
           if (true) {}
-          sum = api.column(1, {page:'current'}).data().count();
+          sum = api.column(1).data().count();
 
           for (var i = 0; i < sum; i++) {
             if (api.column(4).data(0)[i].toLowerCase() == 'menbre') {

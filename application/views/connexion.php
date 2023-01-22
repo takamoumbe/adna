@@ -1,5 +1,10 @@
 <!-- head.php -->
 <?php include 'vendors/includes/head.php'; ?>
+<?php 
+  if ($this->session->flashdata('message')){
+    echo $this->session->flashdata('message');
+  }
+?>
 
 <body class="hold-transition login-page">
   <div class="login-box">
@@ -11,9 +16,10 @@
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg"></p>
-        <form method="POST" action="<?php echo base_url("Home"); ?>">
+        <form method="POST" action="<?php echo base_url("Login"); ?>">
           <div class="input-group mb-3">
-            <input type="text" name="login" class="form-control" placeholder="ex : ">
+            <?php echo form_error('login', '<div class="text-danger col-md-12 col-12">', '</div>'); ?>
+            <input type="text" name="login" class="form-control" placeholder="Entrez votre login.......">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fa fa-user-circle"></span>
@@ -21,7 +27,8 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="*************">
+            <?php echo form_error('password', '<div class="text-danger col-md-12 col-12">', '</div>'); ?>
+            <input type="password" name="password" class="form-control" placeholder="Entrez votre password.......">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -48,8 +55,8 @@
     </div>
   </div>
 
-<!-- javascript.php -->
-<?php include 'vendors/includes/javascript.php'; ?>
+  <!-- javascript.php -->
+  <?php include 'vendors/includes/javascript.php'; ?>
 
 </body>
 </html>

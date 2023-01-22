@@ -7,6 +7,8 @@
     <!-- Preloader -->
     <?php include 'vendors/includes/preloader.php'; ?>
 
+    
+
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
@@ -68,14 +70,14 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3><?php echo $count_all_assiciation; ?></h3>
+                  <h3><?php echo $allAssociations[0]->totalAssociation ; ?></h3>
                   <p>Total Associations</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
                 </div>
                 <a href="<?php echo base_url("associationsListe"); ?>" class="small-box-footer">
-                  Consulter D'avantage <i class="fas fa-arrow-circle-right"></i>
+                  Consulter plus <i class="fas fa-arrow-circle-right"></i>
                 </a>
               </div>
             </div>
@@ -85,12 +87,12 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3><?php echo $count_all_paroisiens ?></h3>
+                  <h3><?php echo  $allParoissiens[0]->totalParoissiens ?></h3>
 
                   <p>Total Paroisiens</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-stats-bars"></i>
+                  <i class="fa fa-users"></i>
                 </div>
                 <a href="<?php echo base_url("paroisienListe"); ?>" class="small-box-footer">
                   Consulter plus <i class="fas fa-arrow-circle-right"></i>
@@ -103,7 +105,7 @@
               <!-- small box -->
               <div class="small-box bg-secondary">
                 <div class="inner text-white">
-                  <h3><?php echo $count_all_engagement; ?></h3>
+                  <h3><?php echo $allEngagement[0]->totalEngagements; ?></h3>
 
                   <p>Total Engagements</p>
                 </div>
@@ -119,7 +121,7 @@
               <!-- small box -->
               <div class="small-box bg-danger">
                 <div class="inner">
-                  <h3><?php echo $count_all_versement ?></h3>
+                  <h3><?php echo $allVersement[0]->totalVersement; ?></h3>
 
                   <p>Versements</p>
                 </div>
@@ -131,444 +133,91 @@
             </div>
             <!-- ./col -->
           </div>
-
-          <!-- Section Paroisien -->
-          <div class="card card card-success">
-            <div class="card-header">
-              <h3 class="card-title">Statistiques Des Paroisiens</h3>
-
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-6 col-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="fas fa-users"></i></span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-text">Total Paroisiens</span>
-                      <span class="info-box-number"><?php echo number_format($count_all_paroisiens) ?></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-success"><i class="fa  fa-user-check"></i></span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-text">Paroisiens Actif</span>
-                      <span class="info-box-number"><?php echo number_format($count_actif_paroisiens) ?></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-secondary"><i class="fa fas fa-user-times"></i></span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-text">Paroisiens Inactif</span>
-                      <span class="info-box-number"><?php echo number_format($count_inactif_paroisiens) ?></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-danger"><i class="fas fa-user-tie"></i></span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-text">Total Gestionnaires</span>
-                      <span class="info-box-number"><?php echo number_format($count_all_gestionnaire) ?></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-
-
-
-                <!-- liste des paroisiens -->
-                <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                      <tr class="text-center">
-                        <th>N°</th>
-                        <th>Matricule Paroisien</th>
-                        <th>Nom Paroisien</th>
-                        <th>Sexe Paroisien</th>
-                        <th>Nom Association</th>
-                        <th>Sigle Association</th>
-                        <th>Contact</th>
-                        <th>Adresse</th>
-                        <th>Date Adhésion</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php 
-                      $id = 1;
-                      foreach($Paroisiens as $result) : 
-                        ?>
-                        <tr class="text-center">
-                          <td><?php echo $id; ?></td>
-                          <td><?php echo $result->matriculeParois; ?></td>
-                          <td><?php echo strtoupper($result->nom).ucfirst(' '.$result->prenom); ?></td>
-                          <td><?php echo $result->sexe; ?></td>
-                          <td><?php echo $result->nomAssociation; ?></td>
-                          <td><?php echo $result->sigleAssociation; ?></td>
-                          <td ><?php echo number_format($result->telephone1); ?></td>
-                          <td ><?php echo ucfirst($result->adresse); ?></td>
-                          <td ><?php echo date('Y', strtotime($result->date_adhesion)); ?></td>
-                        </tr>
-                        <?php 
-                        $id++;
-                      endforeach; 
-                      ?>
-                    </tbody>
-                    <tfoot>
-                      <tr class="text-center">
-                        <th>N°</th>
-                        <th>Matricule Paroisien</th>
-                        <th>Nom Paroisien</th>
-                        <th>Sexe Paroisien</th>
-                        <th>Nom Association</th>
-                        <th>Sigle Association</th>
-                        <th>Contact</th>
-                        <th>Adresse</th>
-                        <th>Date Adhésion</th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Section Paroisien -->
           <div class="card card card-secondary">
             <div class="card-header">
-              <h3 class="card-title">Statistiques Des Engagements</h3>
+              <h3 class="card-title">
+                <b>Section Paroissiens</b>
+              </h3>
+
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                   <i class="fas fa-minus"></i>
                 </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
               </div>
             </div>
+
             <!-- /.card-header -->
             <div class="card-body">
+
+              1- Total des Paroissiens par Association
+              <hr>
               <div class="row">
-                <div class="col-md-4 col-sm-6 col-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="fa fa-bars"></i></span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-text">Total Engagements</span>
-                      <span class="info-box-number"><?php echo number_format($count_all_paroisiens) ?></span>
-                    </div>
-                    <!-- /.info-box-content -->
+                <?php 
+                for ($i=0; $i < count($paroiAssocia); $i++) { 
+                  $data = ['#3c8dbc', '#f56954', '#00a65a', '#00c0ef', '#932ab6'];
+                  ?>
+                  <div class="col-6 col-md-3 text-center">
+                    <input type="text" class="knob" readonly value="<?php echo $paroiAssocia[$i]->totalParoissiens ?>" data-width="90" data-height="90" data-fgColor="<?php echo $data[rand(0, 4)] ?>">
+                    <div class="knob-label mt-2"><b>Association <?php echo $paroiAssocia[$i]->sigle ?></b></div>
                   </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-4 col-sm-6 col-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-success"><i class="fa fa-check"></i></span>
+                <?php } ?>
+              </div>
+              <br>
 
-                    <div class="info-box-content">
-                      <span class="info-box-text">Engagements Actif</span>
-                      <span class="info-box-number"><?php echo number_format($count_actif_paroisiens) ?></span>
-                    </div>
-                    <!-- /.info-box-content -->
+              <hr>
+              2- Total des Paroissiens par Catégorie
+              <hr>
+              <div class="row mt-2">
+                <?php 
+                for ($i=0; $i < count($paroiCateg); $i++) { 
+                  $data = ['#3c8dbc', '#f56954', '#00a65a', '#00c0ef', '#932ab6'];
+                  ?>
+                  <div class="col-6 col-md-3 text-center">
+                    <input type="text" class="knob" readonly value="<?php echo $paroiCateg[$i]->paroissienCategorie ?>" data-width="90" data-height="90" data-fgColor="<?php echo $data[rand(0, 4)] ?>">
+                    <div class="knob-label mt-2"><b>Total <?php echo ucfirst($paroiCateg[$i]->categorie) ?></b></div>
                   </div>
-                  <!-- /.info-box -->
+                <?php } ?>
+                <div class="col-6 col-md-3 text-center">
+                  <input type="text" class="knob" readonly value="<?php echo $allGest ?>" data-width="90" data-height="90" data-fgColor="<?php echo $data[rand(0, 4)] ?>">
+                  <div class="knob-label mt-2"><b>Gestionnaires</b></div>
                 </div>
-                <!-- /.col -->
-                <div class="col-md-4 col-sm-6 col-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-secondary"><i class="fa fa-times"></i></span>
-
-                    <div class="info-box-content">
-                      <span class="info-box-text">Engagements Inactif</span>
-                      <span class="info-box-number"><?php echo number_format($count_inactif_paroisiens) ?></span>
-                    </div>
-                    <!-- /.info-box-content -->
+                <!-- ./col -->
+              </div>
+              <br>
+              <hr>
+              3- Total des Paroissiens par Genre
+              <hr>
+              <div class="row mt-2">
+                <?php 
+                for ($i=0; $i < count($paroiSexe); $i++) { 
+                  $data = ['#3c8dbc', '#f56954', '#00a65a', '#00c0ef', '#932ab6'];
+                  ?>
+                  <div class="col-6 col-md-3 text-center">
+                    <input type="text" class="knob" readonly value="<?php echo $paroiSexe[$i]->totalParoissiens ?>" data-width="90" data-height="90" data-fgColor="<?php echo $data[rand(0, 4)] ?>">
+                    <div class="knob-label mt-2"><b>Sexe <?php echo ucfirst($paroiSexe[$i]->sexe) ?></b></div>
                   </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
+                <?php } ?>
+                <!-- ./col -->
+              </div>
 
 
-                <!-- liste des engagements -->
+              <!-- /.row -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.card-body -->
+        </div>
 
-                
-                <div class="col-12 col-sm-12">
-                  <div class="card card-ligth card-tabs">
-                    <div class="card-header p-2 pt-2">
-                      <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
-                        <li class="pt-2 px-3"><h3 class="card-title">Gestion Engagements : </h3></li>
-                        <li class="nav-item">
-                          <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-two-home" role="tab" aria-controls="custom-tabs-two-home" aria-selected="true">Simple</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-two-profile" role="tab" aria-controls="custom-tabs-two-profile" aria-selected="false">Engagements & Versements</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="card-body">
+      </div>
+    </div>
 
-                      <!-- section juste les engagements -->
-                      <div class="tab-content" id="custom-tabs-two-tabContent">
-                        <div  
-                        class="tab-pane fade show active" 
-                        id="custom-tabs-two-home" 
-                        role="tabpanel" 
-                        aria-labelledby="custom-tabs-two-home-tab"
-                        />
-                        <div class="card card card-ligth">
-                          <div class="card-header">
-                            <h3 class="card-title">Filtrez les données en fonction de vos exideances</h3>
-
-                            <div class="card-tools">
-                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                              </button>
-                            </div>
-                          </div>
-                          <!-- /.card-header -->
-                          <div class="card-body">
-                            <div class="row">
-                              <div class="form-group col-md-6">
-                                <label for="date_versement" class="col-md-12 text-center">Rangement Engagements</label>
-                                <div class="row">
-                                  <div class="input-group col-md-6">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </span>
-                                    </div>
-                                    <input type="date" class="form-control float-right" id="daterangepickerVersMin">
-                                  </div>
-                                  <div class="input-group col-md-6">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </span>
-                                    </div>
-                                    <input type="date" class="form-control float-right" id="daterangepickerVersMax">
-                                  </div>
-                                </div>
-                              </div>
-
-
-                              <div class="form-group col-md-6">
-                                <label for="date_versement" class="col-md-12 text-center">Rangement Versements</label>
-                                <div class="row">
-                                  <div class="input-group col-md-6">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </span>
-                                    </div>
-                                    <input type="date" class="form-control float-right" id="daterangepickerEnagementMin">
-                                  </div>
-                                  <div class="input-group col-md-6">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </span>
-                                    </div>
-                                    <input type="date" class="form-control float-right" id="daterangepickerEnagementMax">
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="row">
-                              <div class="form-group col-md-3">
-                                <label>
-                                  Nbre Paroisiens : <span id="totalParoisiens"></span>
-                                </label>
-                              </div>
-
-                              <div class="form-group col-md-3">
-                                <label>
-                                  Nbre Enagegements : <span id="totalEngagements"></span>
-                                </label>
-                              </div>
-
-                              <div class="form-group col-md-3">
-                                <label>
-                                  <span>Versements ($)</span> : <span id="montantVers" class="text-danger"></span>
-                                </label>
-                              </div>
-
-                              <div class="form-group col-md-3">
-                                <label>
-                                  Engagements ($) : <span id="montantEngag" class="text-danger"></span>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <table id="engagement2" class="table table-bordered table-striped">
-                          <thead>
-                            <tr class="text-center">
-                              <th>N°</th>
-                              <th>Paroisien</th>
-                              <th>Montant Eng</th>
-                              <th>Montant Vers</th>
-                              <th>Début Eng</th>
-                              <th>Fin Eng</th>
-                              <th>Date Vers</th>
-                              <th>Type Eng</th>
-                              <th>Association</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php 
-                            $id = 1;
-                            for ($i=0; $i < count($simple_engagements_versements) ; $i++) { 
-                              ?>
-                              
-
-                              
-                              <tr class="text-center">
-                                <td><?php echo $id; ?></td>
-                                <td><?php echo strtoupper($simple_engagements_versements[$i]->nomParoisien).' '.ucfirst($simple_engagements_versements[$i]->prenomParoisien); ?></td>
-                                <td><?php echo $simple_engagements_versements[$i]->montantEng; ?></td>
-                                <td><?php echo $simple_engagements_versements[$i]->montantVers; ?></td>
-                                <td><?php echo $simple_engagements_versements[$i]->date_debut; ?></td>
-                                <td><?php echo $simple_engagements_versements[$i]->date_fin; ?></td>
-                                <td><?php echo $simple_engagements_versements[$i]->date_versement; ?></td>
-                                <td><?php echo $simple_engagements_versements[$i]->type; ?></td>
-                                <td><?php echo $simple_engagements_versements[$i]->sigleAssociation; ?></td>
-                              </tr>
-                              <?php 
-                              $id++;
-                            } 
-                            ?>
-                          </tbody>
-                          <tfoot>
-                            <tr class="text-center">
-                              <th>N°</th>
-                              <th>Paroisien</th>
-                              <th>Montant Eng</th>
-                              <th>Montant Vers</th>
-                              <th>Début Eng</th>
-                              <th>Fin Eng</th>
-                              <th>Date Vers</th>
-                              <th>Type Eng</th>
-                              <th>Association</th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-
-
-                      <!-- section engagements et versements -->
-                      <div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel" aria-labelledby="custom-tabs-two-profile-tab">
-
-                        <table id="engagement3" class="table table-bordered table-striped">
-                          <thead>
-                            <tr class="text-center">
-                              <th>N°</th>
-                              <th>Paroisien</th>
-                              <th>Montant Engagements</th>
-                              <th>Montant Versements</th>
-                              <th>Date Début</th>
-                              <th>Date Fin</th>
-                              <th>Appréciation</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php 
-                            function appreciations($montantV, $montantE){
-                              if ($montantV < ($montantE * 0.25)) {
-                                $result = "text-danger";
-                              } 
-                              else if ($montantV >= ($montantE * 0.25) and $montantV < ($montantE * 0.5)) {
-                                $result = "text-warning";
-                              }
-                              else if ($montantV >= ($montantE * 0.5) and $montantV < ($montantE * 0.75)) {
-                                $result = "text-secondary";
-                              }
-                              else if ($montantV >= ($montantE * 0.75) and $montantV < ($montantE)) {
-                                $result = "text-success";
-                              }
-                              else if ($montantV >= ($montantE)) {
-                                $result = "text-info";
-                              }
-                              return $result;
-                            }
-
-                            $id = 1;
-                            for ($i=0; $i < count($engagements_versements) ; $i++) { 
-
-                              ?>
-                              
-
-                              
-                              <tr class="text-center">
-                                <td><?php echo $id; ?></td>
-                                <td><?php echo strtoupper($engagements_versements[$i]->nomParoisien).' '.ucfirst($engagements_versements[$i]->prenomParoisien); ?></td>
-                                <td><?php echo number_format($engagements_versements[$i]->montantE); ?></td>
-                                <td><?php echo number_format($engagements_versements[$i]->montantV); ?></td>
-                                <td><?php echo $engagements_versements[$i]->date_debut; ?></td>
-                                <td><?php echo $engagements_versements[$i]->date_fin; ?></td>
-                                <td><span class="fa fa-star <?php echo appreciations($engagements_versements[$i]->montantV, $engagements_versements[$i]->montantE) ?>"></span></td>
-                              </tr>
-                              <?php 
-                              $id++;
-                            } 
-                            ?>
-                          </tbody>
-                          <tfoot>
-                            <tr class="text-center">
-                              <th>N°</th>
-                              <th>Paroisien</th>
-                              <th>Montant Engagements</th>
-                              <th>Montant Versements</th>
-                              <th>Date Début</th>
-                              <th>Date Fin</th>
-                              <th>Appréciation</th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                   </div>
-                 </div>
-                 <!-- /.card -->
-               </div>
-             </div>
-
-           </div>
-
-         </div>
-       </div>
-
-     </div><!-- /.container-fluid -->
-   </section>
-   <!-- /.content -->
- </div>
+  </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
 </div>
 <!-- ./wrapper -->
 
@@ -656,12 +305,12 @@
         }
         return false;
       }
-    );
+      );
     $('#daterangepickerVersMin').datetimepicker({ onChangeMonthYear: function () { table.draw(); }, changeMonth: true, changeYear: true });
     $('#daterangepickerVersMax').datetimepicker({ onChangeMonthYear: function () { table.draw(); }, changeMonth: true, changeYear: true });
     $('#daterangepickerEnagementMin').datetimepicker({ onChangeMonthYear: function () { table.draw(); }, changeMonth: true, changeYear: true });
     $('#daterangepickerEnagementMax').datetimepicker({ onChangeMonthYear: function () { table.draw(); }, changeMonth: true, changeYear: true });
-      
+
     $('#engagement2 tfoot th').each(function () {
       var title = $(this).text();
       $(this).html('<input type="text" class="form-control dd" placeholder="Search ' + title + '" />');
@@ -715,7 +364,7 @@
         .reduce( function (a, b) {
           return intVal(a) + intVal(b);
         }, 0 );
-       
+
 
         // Total over this page
         pageTotal = api
@@ -737,42 +386,42 @@
   });
 
 
-  $(document).ready(function () {
-    $('#engagement3 tfoot th').each(function () {
-      var title = $(this).text();
-      $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
-    });
-
-    // DataTable
-    var table = $('#engagement3').DataTable({
-      "responsive": true, 
-      "lengthChange": false, 
-      "autoWidth": false,
-      "buttons": ["csv", "excel", "pdf", "colvis"],
-      initComplete: function () {
-
-        // Apply the search
-        this.api()
-        .columns()
-        .every(function () {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change clear', function () {
-            if (that.search() !== this.value) {
-              that.search(this.value).draw();
-            }
-          });
-        });
-      },
-    });
-    table.buttons().container().appendTo('#engagement3_wrapper .col-md-6:eq(0)');
+$(document).ready(function () {
+  $('#engagement3 tfoot th').each(function () {
+    var title = $(this).text();
+    $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
   });
 
+    // DataTable
+  var table = $('#engagement3').DataTable({
+    "responsive": true, 
+    "lengthChange": false, 
+    "autoWidth": false,
+    "buttons": ["csv", "excel", "pdf", "colvis"],
+    initComplete: function () {
+
+        // Apply the search
+      this.api()
+      .columns()
+      .every(function () {
+        var that = this;
+
+        $('input', this.footer()).on('keyup change clear', function () {
+          if (that.search() !== this.value) {
+            that.search(this.value).draw();
+          }
+        });
+      });
+    },
+  });
+  table.buttons().container().appendTo('#engagement3_wrapper .col-md-6:eq(0)');
+});
+
   // select2
-  $('.select2bs4').select2({
-    theme: 'bootstrap4'
-  })
-  
+$('.select2bs4').select2({
+  theme: 'bootstrap4'
+})
+
 </script>
 </body>
 </html>
