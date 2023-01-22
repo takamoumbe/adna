@@ -130,13 +130,21 @@
         if (result.isConfirmed) {
           Swal.fire({
             title:"Traitement",
-            text: "L'enregistrement de l'association et en cour de traitement.",
+            text: "Requete en cour de traitement.",
             showClass:{
               popup:"animate__animated animate__bounceIn"
             },
             allowOutsideClick: false,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "Okey, merci!",
+            preConfirm: () => {
+              Swal.showLoading()
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve(true)
+                }, 3000)
+              })
+            }
           }).then((result) => {
             if (result.isConfirmed) {
               form.submit();

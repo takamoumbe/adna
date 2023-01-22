@@ -16,14 +16,14 @@ class Engagement extends CI_Controller {
 	}
 
 
-	/* page de creation */
+	# 1- page d'insertion engagement
 	public function index() {
 		$data['paroisiens'] = $this->Paroisien->get_all_actif();
 		$this->load->view('engagements/edit', $data);
 	}
 
 
-	/* page de listing */
+	# 2- Infos des engagements
 	public function get_all() {
 		$data['Engagements'] = $this->Engagement->get_all();
 		$this->load->view('engagements/list', $data);
@@ -31,7 +31,7 @@ class Engagement extends CI_Controller {
 
 
 
-	/* enregistrement */
+	# 3- Insertion d'un engagement
 	public function store() {
 		$this->form_validation->set_rules('paroisien', 		'Nom du paroisien', 	'required');
 		$this->form_validation->set_rules('type', 			'Type d\'engagement', 	'required');
@@ -56,7 +56,7 @@ class Engagement extends CI_Controller {
 				'paroisien' 	=> $this->input->post('paroisien'), 
 				'type' 			=> $this->input->post('type'), 
 				'date_debut' 	=> $this->input->post('date_debut'), 
-				'date_fin' 		=> $date_fin 
+				'date_fin' 		=> $date_end 
 			);
 			$Exist = $this->Engagement->if_exit_engagement($info);
 
@@ -76,7 +76,7 @@ class Engagement extends CI_Controller {
 					'paroisien'			=>	$this->input->post('paroisien'),
 					'type'				=>	$this->input->post('type'),
 					'date_debut'		=>	$this->input->post('date_debut'),
-					'date_fin'			=>	$date_fin,
+					'date_fin'			=>	$date_end	,
 					'montant'			=>	$this->input->post('montant'),
 					'statut'			=>	'actif',
 					'saveAt'			=>	date('d-m-Y h:i:s'),
@@ -93,9 +93,51 @@ class Engagement extends CI_Controller {
 					redirect(base_url("engagements"));
 				}
 			}
+		}
+	}
+
+
+
+	# 4- Infos d'un engagement
+	public function get($idEngagement) {
+		$data['engagements'] = $this->Engagement->get($idEngagement);
+		$this->load->view('engagements/update', $data);
+	}
+
+
+
+	public function getting($idEngagement) {
+		$data = $this->Engagement->get($idEngagement);
+		return $data;
+	}
+
+
+
+	# 5- Modifier un engagement
+	public function update() {
+		$this->form_validation->set_rules('montant', 			'Montant de l\'engagement', 'required|integer');
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->session->set_flashdata('errors', validation_errors());
+			$this->session->set_flashdata('message', updateEngagLost($this->input->post('nom'), $this->input->post('type')));
+			$this->get($this->input->post('idEngagement'));
+		}
+		else {
+			$data = array(
+				'montant'			=>	$this->input->post('montant'),
+				'updateAt'			=>	date('d-m-y h:i:s'),
+				'updateBy'			=>	'',
+			);
 			
-
-
+			if ($this->Engagement->update($this->input->post('idEngagement'), $data) == FALSE) {
+				$this->session->set_flashdata('errors', validation_errors());
+			$this->session->set_flashdata('message', updateEngagLost($this->input->post('nom'), $this->input->post('type')));
+				$this->get($this->input->post('idParois'));
+			} 
+			else {
+			$this->session->set_flashdata('message', updateEngagWin($this->input->post('nom'), $this->input->post('type')));
+				redirect(base_url("engagementListe"));
+			}
 		}
 	}
 

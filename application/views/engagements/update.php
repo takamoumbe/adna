@@ -56,7 +56,7 @@ if ($this->session->flashdata('message')){
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="<?php echo base_url("#"); ?>">Modifier</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo base_url("#"); ?>">Ajouter</a></li>
                 <li class="breadcrumb-item active">Engagements</li>
               </ol>
             </div><!-- /.col -->
@@ -71,29 +71,26 @@ if ($this->session->flashdata('message')){
           <div class="col-md-12">
 
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title">Modifier Engagement</h3>
               </div>
 
               <!-- form start -->
-              <form method="POST" action="<?php echo base_url("engagementUpdate") ?>">
+              <form method="POST" action="<?php echo base_url("engagementUpdate") ?>" id="form-id">
                 <div class="card-body row">
+                  <?php  
+                    for ($i=0; $i < count($engagements); $i++) { 
+                  ?>
                   <div class="form-group col-md-6 col-12">
+                    <input type="hidden" name="idEngagement" value="<?php echo $engagements[$i]->idEngagement ?>" readonly>
                     <label for="nom">Nom Paroisien</label>
-                    <input type="hidden" name="idEngagement" value="<?php echo $engagements->idEngagement;?>">
-                    <input type="text" readonly class="form-control bg-white" name="paroisien" value="<?php echo $engagements->nomParoisien.' '.$engagements->prenomParoisien;?>">
-                    <input type="hidden" readonly class="form-control bg-white" name="paroisien" value="<?php echo $engagements->paroisien;?>">
+                    <input type="text" class="form-control bg-white" name="nom" value="<?php strtoupper($engagements[$i]->nom).' '.ucfirst($engagements[0]->prenom) ?>" readonly>
                   </div>
 
                   <div class="form-group col-md-6 col-12">
                     <label for="sigle">Type Engagement</label>
-                    <select class="form-control select2bs4" name="type" style="width: 100%;">
-                      <option selected><?php echo $engagements->type;?></option>
-                      <option>dîme</option>
-                      <option>cotisations de construction</option>
-                      <option>Offrandes des recoltes</option>
-                    </select>
+                    <input type="text" class="form-control bg-white" name="type" value="<?php echo $engagements[$i]->type  ?>" readonly>
                   </div>
                   
                   <div class="form-group col-md-6 col-12">
@@ -104,9 +101,8 @@ if ($this->session->flashdata('message')){
                           <i class="far fa-calendar-alt"></i>
                         </span>
                       </div>
-                      <input type="date" class="form-control float-right" name="date_debut" id="date_debut" value="<?php echo $engagements->date_debut;?>">
+                      <input type="date" class="form-control float-right bg-white" readonly value="<?php $engagements[$i]->date_debut ?>">
                     </div>
-                    <?php echo form_error('date_debut', '<div class="text-danger">', '</div>'); ?>
                   </div>
                   
                   <div class="form-group col-md-6 col-12">
@@ -117,15 +113,16 @@ if ($this->session->flashdata('message')){
                           <i class="far fa-money-bill-alt"></i>
                         </span>
                       </div>
-                      <input type="text" class="form-control float-right" onkeypress="return onlyNumberKey(event)" name="montant" id="montant" minlength="3" value="<?php echo $engagements->montant;?>">
+                      <input type="text" class="form-control float-right" autocomplete="off" onkeypress="return onlyNumberKey(event)" name="montant" id="montant" minlength="3" value="<?php echo $engagements[0]->montant  ?>">
                     </div>
                     <?php echo form_error('montant', '<div class="text-danger">', '</div>'); ?>
                   </div>
+                <?php } ?>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">
+                  <button type="button" id="submit-association" class="btn btn-primary col-md-2 col-12">
                     Modifier <i class="fa fa-save ml-1"></i>
                   </button>
                 </div>
@@ -161,6 +158,40 @@ if ($this->session->flashdata('message')){
         return false;
       return true;
     }
+  </script>
+
+  <script>
+    $('#submit-association').on('click',function(e){
+      e.preventDefault();
+      var form = $(this).parents('form');
+      Swal.fire({
+        title: "Etes vous sur?",
+        text: "Voulez vous modifier cet engagement ?",
+        type: "warning",
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Oui, je le souhaite!",
+        closeOnConfirm: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title:"Traitement",
+            text: "Modification de de l'engagement et en cour.",
+            showClass:{
+              popup:"animate__animated animate__bounceIn"
+            },
+            allowOutsideClick: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Okey, merci!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          })
+        }
+      });
+    });
   </script>
 </body>
 </html>

@@ -80,4 +80,46 @@
 		return $value;
 	}
 
+
+
+	function updateEngagLost($nom, $prenom){
+		$value = "
+			<script>
+				setTimeout(
+					function () { 
+						Swal.fire({
+							title: 'Impossible',
+      						html: 'l\'engagement de <b>".strtoupper($nom)." sur ".ucfirst($prenom)."</b> n\'a pas pue etre modifié.',
+      						allowOutsideClick: false,
+						    confirmButtonColor: '#DD6B55',
+						    confirmButtonText: 'Oui, je comprend.',
+						})
+					}, 
+					200
+				);
+			</script>";
+		return $value;
+	}
+
+
+
+	function updateEngagWin($nom, $prenom){
+		$value = "
+			<script>
+				setTimeout(
+					function () { 
+						Swal.fire({
+							title: 'Félicitations',
+      						html: 'l\'engagement de <b>".strtoupper($nom)."</b> sur <b>".ucfirst($prenom)."</b> a bien été modifié.',
+      						allowOutsideClick: false,
+						    confirmButtonColor: '#DD6B55',
+						    confirmButtonText: 'Oui, je comprend.',
+						})
+					}, 
+					200
+				);
+			</script>";
+		return $value;
+	}
+
 ?>

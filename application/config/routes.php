@@ -6,8 +6,10 @@ $route['404_override'] = 'Dashboard/_404';
 $route['translate_uri_dashes'] = FALSE;
 
 
-$route['Authentification']				= 'Dashboard/index';
-$route['Home'] 							= 'Dashboard/dashboard';
+$route['On']				= 'Dashboard/index';
+$route['Login']				= 'Dashboard/connexion';
+$route['Logout'] 			= 'Dashboard/exit';
+$route['Home'] 				= 'Dashboard/dashboard';
 
 
 $route['associations'] 					= "Associations/index";
@@ -42,6 +44,7 @@ $route['engagementListe'] 				= "Engagement/get_all";
 $route['engagementGlobal'] 				= "Engagement/engagements_versements";
 $route['engagementCreate']['post'] 		= "Engagement/store";
 $route['engagementEdit/(:any)'] 		= "Engagement/get/$1";
+$route['engagementGet/(:any)'] 			= "Engagement/getting/$1";
 $route['engagementView/(:any)'] 		= "Engagement/view/$1";
 $route['engagementUpdate'] 				= "Engagement/update";
 $route['engagementDelete/(:any)'] 		= "Engagement/delete/$1";
