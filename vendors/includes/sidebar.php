@@ -8,13 +8,21 @@
       <a href="<?php echo base_url(); ?>vendors/#" class="d-block">
         <div class="row mt-2">
           <div class="col-md-12">
-            <sup class="flot-left">jhjjhj</sup><br>
-            Alexander Pierce
+            <sup class="flot-left"><?php echo ucfirst($this->session->nom.' '.$this->session->prenom) ?></sup><br>
+            <?php echo ucfirst($this->session->fonction) ?>
           </div>
         </div>
       </a>
     </div>
   </div>
+
+  
+<?php 
+  if (($this->session->nom == '') || ($this->session->prenom == '') || ($this->session->fonction == '') || ($this->session->login == '') || ($this->session->accreditations == '') || ($this->session->idGest == '') || ($this->session->login == '') || ($this->session->password == '') || ($this->session->sigle == '') || ($this->session->nomAssociation == '')) {
+      redirect(base_url("On"));
+  }
+
+?>
 
 
   <!-- Sidebar Menu -->
@@ -70,33 +78,7 @@
       <!-- section Paroisiens -->
       <li class="nav-item">
         <a href="#" class="nav-link">
-          <i class="nav-icon fas fa-user"></i>
-          <p>
-            Gestionnaires
-            <i class="right fas fa-angle-left"></i>
-          </p>
-        </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="<?php echo base_url("gestionnairesListe") ?>" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Lister Gestionnaires</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="<?php echo base_url("gestionnaires") ?>" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Ajouter Gestionnaire</p>
-            </a>
-          </li>
-        </ul>
-      </li>
-
-
-      <!-- section Paroisiens -->
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="nav-icon fas fa-user-circle"></i>
+          <i class="nav-icon fas fa-user-friends"></i>
           <p>
             Paroisiens
             <i class="right fas fa-angle-left"></i>
@@ -122,7 +104,7 @@
       <!-- section Paroisiens -->
       <li class="nav-item">
         <a href="#" class="nav-link">
-          <i class="nav-icon far fa-calendar-alt"></i>
+          <i class="nav-icon fas fa-hands-helping"></i>
           <p>
             Engagements
             <i class="right fas fa-angle-left"></i>
@@ -148,7 +130,7 @@
       <!-- section Paroisiens -->
       <li class="nav-item">
         <a href="#" class="nav-link">
-          <i class="nav-icon far fa-money-bill-alt"></i>
+          <i class="nav-icon fas fa-money-bill-wave"></i>
           <p>
             Versements
             <i class="right fas fa-angle-left"></i>
@@ -168,6 +150,60 @@
             </a>
           </li>
         </ul>
+      </li>
+
+
+      <!-- section statistiques -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon ion ion-pie-graph"></i>
+          <p>
+            Statistiques
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="<?php echo base_url("gestionnairesListe") ?>" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Statistiques</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+      <!-- section gestionnaire -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fas fa-user-secret"></i>
+          <p>
+            Gestionnaires
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="<?php echo base_url("gestionnairesListe") ?>" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Lister Gestionnaires</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?php echo base_url("gestionnaires") ?>" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Ajouter Gestionnaire</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+      <li class="nav-item">
+        <a href="<?php echo base_url("Logout") ?>" class="nav-link">
+          <i class="fas fa-sign-out-alt ml-1"></i>
+          <p>Déconnexion</p>
+        </a>
       </li>
 
 
